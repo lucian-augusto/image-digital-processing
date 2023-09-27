@@ -8,7 +8,6 @@
 #-------------------------------------------------------------------------------
 #===============================================================================
 
-
 import cv2
 import numpy
 import mean_filters as filters
@@ -37,7 +36,6 @@ def load_image(path: str):
         print("Error while opening the image\n")
         exit()
 
-    #image = image.reshape((image.shape[0], image.shape[1], 1))
     image = image.astype(numpy.float32) / 255
 
     return image
