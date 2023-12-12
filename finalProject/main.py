@@ -1,4 +1,4 @@
-from dft import image_dft
+from dft import image_dft, inverse_image_dft
 from fft import image_fft
 from pattern_generator import *
 import cv2
@@ -19,23 +19,30 @@ def load_image(path: str):
 def main():
     image = load_image(IMAGE_PATH)
 
-    image = generate_grating_pattern(256, 256, angle=np.pi/4)
+    image = generate_grating_pattern(256, 256, angle=0)
     #image = generate_single_rectangle_pattern(256, 256)
 
     cv2.imshow("original", image)
     dft = image_dft(image)
+    cv2.imshow("DFT from Scratch", dft.real)
 
-    cv2.imshow("DFT from Scratch", dft)
     spectrum = image_fft(image)
-    cv2.imshow("FFT from Scratch", spectrum)
+    cv2.imshow("FFT from Scratch", spectrum.real)
+
     comp = np.fft.fft2(image)
     cv2.imshow("Numpy's FFT", comp.real)
 
-    spectrum = np.fft.fftshift(spectrum)
-    cv2.imshow("FFT from Scratch - Shifted", spectrum)
-    comp = np.fft.fftshift(comp.real)
-    cv2.imshow("comp", comp)
+    sheifted_spectrum = np.fft.fftshift(spectrum)
+    cv2.imshow("FFT from Scratch - Shifted", sheifted_spectrum.real)
+
+    shifted_comp = np.fft.fftshift(comp)
+    cv2.imshow("Numpy's FFT - Shifted", shifted_comp.real)
     cv2.waitKey()
+
+    img = inverse_image_dft(spectrum)
+    cv2.imshow("Reverse DFT", img.real)
+    cv2.waitKey()
+
 
 if __name__ == '__main__':
     main()

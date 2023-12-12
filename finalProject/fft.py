@@ -31,7 +31,7 @@ def fft(f: NDArray[Any] | list[int | float]) -> list:
 def image_fft(image):
     height, width = image.shape
 
-    spectrum = zeros_like(image)
+    spectrum = zeros_like(image, dtype=complex)
     for y in range(height):
         spectrum[y,:] = fft(image[y,:])
 

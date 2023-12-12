@@ -11,14 +11,16 @@ def dft(f, is_inverse=False):
 
     return F
 
+
 def inverse_dft(F):
     N = len(F)
     return dft(F, is_inverse=True) / N
 
+
 def image_dft(image):
     height, width = image.shape
 
-    spectrum = zeros_like(image)
+    spectrum = zeros_like(image, dtype=complex)
     for y in range(height):
         spectrum[y,:] = dft(image[y,:])
 
@@ -26,3 +28,17 @@ def image_dft(image):
         spectrum[:,x] = dft(spectrum[:,x])
 
     return spectrum
+
+
+def inverse_image_dft(spectrum):
+    height, width = spectrum.shape
+
+    image = zeros_like(spectrum)
+
+    for y in range(height):
+        image[y,:] = inverse_dft(spectrum[y,:])
+
+    for x in range(width):
+        image[:,x] = inverse_dft(image[:,x])
+
+    return image
