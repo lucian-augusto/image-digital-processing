@@ -1,5 +1,5 @@
 from typing import Any
-from numpy import cos, sin, pi
+from numpy import cos, sin, pi, zeros_like
 from numpy.typing import NDArray
 
 def fft(f: NDArray[Any] | list[int | float]) -> list:
@@ -26,6 +26,20 @@ def fft(f: NDArray[Any] | list[int | float]) -> list:
         F[k + half_legnth] =  yeven_k  -  w_yodd_k
 
     return F
+
+
+def image_fft(image):
+    height, width = image.shape
+
+    spectrum = zeros_like(image)
+    for y in range(height):
+        spectrum[y,:] = fft(image[y,:])
+
+    for x in range(width):
+        spectrum[:,x] = fft(spectrum[:,x])
+
+    return spectrum
+
 
 def _even_odd_coefficient_separator(
         x: NDArray[Any] | list[int | float]
